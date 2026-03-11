@@ -1,0 +1,11 @@
+{
+    "agents": [
+        "cursor",
+        "gemini",
+        "copilot"
+    ],
+    "guidelines": true,
+    "packages": [
+        "filament/filament"
+    ]
+}
