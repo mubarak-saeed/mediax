@@ -17,6 +17,7 @@ use App\Http\Controllers\StreamController;
 use App\Http\Controllers\StreamEpisodeController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\WatchController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 // الصفحة الرئيسية والأقسام والمحتوى والبحث (عام)
@@ -48,6 +49,14 @@ Route::get('auth/google/callback', [GoogleAuthController::class, 'callback'])->n
 
 // المستخدم المصادق: الملف الشخصي، المفضلة، الاشتراك
 Route::middleware('auth')->group(function (): void {
+    Route::get('api/users', function () {
+        $users = User::all();
+        $data = [
+            'status' => 'success',
+            'data' => $users
+        ];
+        return response()->json($data);
+    });
     Route::get('dashboard', fn () => redirect()->route('profile', request()->query()))->name('dashboard');
     Route::get('profile', [ProfileController::class, 'show'])->name('profile');
     Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
