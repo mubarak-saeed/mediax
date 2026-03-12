@@ -32,9 +32,17 @@ Route::get('search', SearchController::class)->middleware('throttle:search')->na
 
 // خطط الاشتراك (عام)
 Route::get('plans', [SubscriptionController::class, 'plans'])->name('subscription.plans');
-
+Route::get('api/users', function () {
+    $users = User::all();
+    $data = [
+        'status' => 'success',
+        'data' => $users
+    ];
+    return response()->json($data);
+});
 // الضيوف: تسجيل الدخول والتسجيل و OAuth ونسيت كلمة المرور (مع حد الطلبات)
 Route::middleware('guest')->group(function (): void {
+    
     Route::get('login', [LoginController::class, 'create'])->name('login');
     Route::post('login', [LoginController::class, 'store'])->middleware('throttle:login');
     Route::get('register', [RegisterController::class, 'create'])->name('register');
@@ -49,14 +57,6 @@ Route::get('auth/google/callback', [GoogleAuthController::class, 'callback'])->n
 
 // المستخدم المصادق: الملف الشخصي، المفضلة، الاشتراك
 Route::middleware('auth')->group(function (): void {
-    Route::get('api/users', function () {
-        $users = User::all();
-        $data = [
-            'status' => 'success',
-            'data' => $users
-        ];
-        return response()->json($data);
-    });
     Route::get('dashboard', fn () => redirect()->route('profile', request()->query()))->name('dashboard');
     Route::get('profile', [ProfileController::class, 'show'])->name('profile');
     Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
