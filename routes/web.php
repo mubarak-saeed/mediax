@@ -17,7 +17,6 @@ use App\Http\Controllers\StreamController;
 use App\Http\Controllers\StreamEpisodeController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\WatchController;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 // الصفحة الرئيسية والأقسام والمحتوى والبحث (عام)
@@ -32,17 +31,9 @@ Route::get('search', SearchController::class)->middleware('throttle:search')->na
 
 // خطط الاشتراك (عام)
 Route::get('plans', [SubscriptionController::class, 'plans'])->name('subscription.plans');
-Route::get('api/users', function () {
-    $users = User::all();
-    $data = [
-        'status' => 'success',
-        'data' => $users
-    ];
-    return response()->json($data);
-});
+
 // الضيوف: تسجيل الدخول والتسجيل و OAuth ونسيت كلمة المرور (مع حد الطلبات)
 Route::middleware('guest')->group(function (): void {
-    
     Route::get('login', [LoginController::class, 'create'])->name('login');
     Route::post('login', [LoginController::class, 'store'])->middleware('throttle:login');
     Route::get('register', [RegisterController::class, 'create'])->name('register');
