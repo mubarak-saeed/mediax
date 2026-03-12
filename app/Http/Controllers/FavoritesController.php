@@ -13,7 +13,7 @@ class FavoritesController extends Controller
     public function index(Request $request): View
     {
         $user = $request->user();
-        $typeFilter = $request->query('type', 'all'); // all | content | season | episode
+        $typeFilter = $request->query('type', 'content'); // all | content | season | episode
         $sort = $request->query('sort', 'newest');   // newest | oldest
 
         $query = $user->favorites()

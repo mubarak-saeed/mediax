@@ -54,22 +54,29 @@ class PlanSeeder extends Seeder
             ],
         ];
 
-        foreach ($plans as $index => $data) {
+        foreach ($plans as $data) {
             $features = $data['features'];
             unset($data['features']);
 
-            $plan = Plan::query()->firstOrCreate(
-                ['name' => $data['name']],
-                array_merge($data, [
+            $plan = Plan::query()->firstOrNew(
+                ['access_level' => $data['access_level']->value],
+                [
+                    'name' => $data['name'],
                     'price' => 0,
                     'description' => null,
-                ])
+                ]
             );
-            $plan->update([
+
+            if (blank($plan->name)) {
+                $plan->name = $data['name'];
+            }
+
+            $plan->fill([
                 'access_level' => $data['access_level'],
                 'sort_order' => $data['sort_order'],
                 'stripe_price_id' => $data['stripe_price_id'],
             ]);
+            $plan->save();
 
             $plan->features()->delete();
             foreach ($features as $i => $title) {

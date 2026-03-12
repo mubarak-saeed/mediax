@@ -238,7 +238,17 @@ class ContentSeeder extends Seeder
         $seriesMoviesSection = $subSections->get($this->getSlug('أفلام متسلسلة'));
         foreach ($seriesMovies as $i => $data) {
             $data['type'] = ContentType::MovieSerial;
-            $this->createMovie($data, $i, $user, $genres, $seriesMoviesSection?->id);
+            $seriesMovie = $this->createMovie($data, $i, $user, $genres, $seriesMoviesSection?->id);
+            for ($i = 1; $i <= 8; $i++) {
+                $season = $seriesMovie->seasons()->firstOrCreate(
+                    ['season' => $i],
+                    ['title' => "الموسم {$i}", 'description' => null, 'poster_url' => $seriesMovie->poster_url]
+                );
+                Episode::query()->firstOrCreate(
+                    ['season_id' => $season->id, 'episode_number' => 1],
+                    ['title' => "الحلقة 1", 'description' => null, 'duration' => null, 'poster_url' => $seriesMovie->poster_url, 'file_url' => self::default_video]
+                );
+            }
         }
         $featuredRequestedSection = $subSections->get($this->getSlug('أفلام مميزة ومطلوبة'));
         foreach ($featuredRequestedMovies as $i => $data) {
@@ -250,7 +260,7 @@ class ContentSeeder extends Seeder
         }
     }
 
-    private function createMovie(array $data, int $index, User $user, $genres, ?int $subSectionId): void
+    private function createMovie(array $data, int $index, User $user, $genres, ?int $subSectionId): Content
     {
         $type = $data['type'] ?? ContentType::Movie;
         $genreNames = $data['genre_names'];
@@ -271,6 +281,7 @@ class ContentSeeder extends Seeder
             ])
         );
         $this->attachGenres($content, $genres, $genreNames);
+        return $content;
     }
 
     private function seedSeries(User $user, $subSections, $genres): void
@@ -462,13 +473,7 @@ class ContentSeeder extends Seeder
 
     private function seedBooks(User $user, $subSections, $genres): void
     {
-        // كتب دينية
-        $religiousBooks = [
-            ['title' => 'رياض الصالحين', 'description' => 'كتاب ديني يحتوي على أحاديث نبوية مختارة.', 'release_year' => 2022, 'access_level_required' => AccessLevel::Free, 'is_featured' => false, 'genre_names' => ['دراما']],
-            ['title' => 'تفسير ابن كثير', 'description' => 'تفسير القرآن الكريم.', 'release_year' => 2021, 'access_level_required' => AccessLevel::Free, 'is_featured' => false, 'genre_names' => ['وثائقي']],
-            ['title' => 'صحيح البخاري', 'description' => 'أصح كتاب بعد كتاب الله.', 'release_year' => 2020, 'access_level_required' => AccessLevel::Free, 'is_featured' => false, 'genre_names' => ['تاريخي']],
-            ['title' => 'الرحيق المختوم', 'description' => 'سيرة النبي محمد صلى الله عليه وسلم.', 'release_year' => 2023, 'access_level_required' => AccessLevel::Free, 'is_featured' => false, 'genre_names' => ['سيرة ذاتية', 'تاريخي']],
-        ];
+
 
         // كتب أدبية
         $literatureBooks = [
@@ -501,10 +506,7 @@ class ContentSeeder extends Seeder
         ];
 
         // إدراج الكتب
-        $religiousSection = $subSections->get($this->getSlug('كتب دينية'));
-        foreach ($religiousBooks as $i => $data) {
-            $this->createBook($data, $i, $user, $genres, $religiousSection?->id);
-        }
+
 
         $literatureSection = $subSections->get($this->getSlug('كتب أدبية'));
         foreach ($literatureBooks as $i => $data) {

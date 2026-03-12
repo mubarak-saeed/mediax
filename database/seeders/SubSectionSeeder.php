@@ -34,15 +34,11 @@ class SubSectionSeeder extends Seeder
                 ['name' => 'مسلسلات تركية مكتملة', 'slug' => 'series-turkish-completed', 'type' => 'series', 'order' => 4],
                 ['name' => 'مسلسلات أجنبية متجددة', 'slug' => 'series-foreign-ongoing', 'type' => 'series', 'order' => 5],
                 ['name' => 'مسلسلات أجنبية مكتملة', 'slug' => 'series-foreign-completed', 'type' => 'series', 'order' => 6],
-                ['name' => 'مسلسلات أجنبية متعددة الأجزاء', 'slug' => 'series-foreign-multipart', 'type' => 'series', 'order' => 7],
-                ['name' => 'مسلسلات كورية متجددة', 'slug' => 'series-korean-ongoing', 'type' => 'series', 'order' => 8],
-                ['name' => 'مسلسلات كورية', 'slug' => 'series-korean', 'type' => 'series', 'order' => 9],
                 ['name' => 'مسلسلات أنمي متجددة', 'slug' => 'series-anime-ongoing', 'type' => 'series', 'order' => 10],
                 ['name' => 'مسلسلات أنمي مكتملة', 'slug' => 'series-anime-completed', 'type' => 'series', 'order' => 11],
                 ['name' => 'مسلسلات سورية', 'slug' => 'series-syrian', 'type' => 'series', 'order' => 12],
                 ['name' => 'مسلسلات خليجية', 'slug' => 'series-gulf', 'type' => 'series', 'order' => 13],
                 ['name' => 'مسلسلات يمنية', 'slug' => 'series-yemeni', 'type' => 'series', 'order' => 14],
-                ['name' => 'مسلسلات وبرامج رمضان 2026', 'slug' => 'series-ramadan-2025', 'type' => 'series', 'order' => 19],
             ];
 
             foreach ($seriesSubsections as $data) {
@@ -81,7 +77,6 @@ class SubSectionSeeder extends Seeder
         $booksSection = Section::query()->where('slug', $this->getSlug('كتب و روايات'))->first();
         if ($booksSection) {
             $booksSubsections = [
-                ['name' => 'كتب دينية', 'slug' => 'books-religious', 'type' => 'book', 'order' => 1],
                 ['name' => 'كتب أدبية', 'slug' => 'books-literature', 'type' => 'book', 'order' => 2],
                 ['name' => 'كتب علمية', 'slug' => 'books-scientific', 'type' => 'book', 'order' => 3],
                 ['name' => 'كتب تاريخية', 'slug' => 'books-historical', 'type' => 'book', 'order' => 4],

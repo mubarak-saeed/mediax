@@ -18,7 +18,7 @@
             {{-- تصفية حسب النوع --}}
             <div class="flex flex-wrap gap-2" role="group" aria-label="نوع المفضلة">
                 <span class="text-slate-500 text-sm w-full sm:w-auto py-1.5">النوع:</span>
-                @foreach(['all' => 'الكل', 'content' => 'محتوى', 'season' => 'موسم', 'episode' => 'حلقة'] as $key => $label)
+                @foreach([ 'content' => 'محتويات', 'season' => 'مواسم', 'episode' => 'حلقات'] as $key => $label)
                     <a href="{{ route('favorites', ['type' => $key, 'sort' => $sort]) }}"
                        class="min-h-[44px] inline-flex items-center px-4 py-2.5 rounded-xl text-sm font-medium transition touch-manipulation {{ $typeFilter === $key ? 'bg-rose-600 text-white' : 'bg-slate-800/80 text-slate-400 hover:text-white hover:bg-slate-700/80' }}">
                         {{ $label }}
