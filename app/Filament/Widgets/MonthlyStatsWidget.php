@@ -2,6 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\Payments\PaymentResource;
+use App\Filament\Resources\Users\UserResource;
 use App\Models\Payment;
 use App\Models\User;
 use Filament\Support\Enums\IconPosition;
@@ -57,13 +59,13 @@ class MonthlyStatsWidget extends BaseWidget
                 ->descriptionIcon('heroicon-o-calendar', IconPosition::Before)
                 ->icon('heroicon-o-user-plus')
                 ->color('primary')
-                ->url(\App\Filament\Resources\Users\UserResource::getUrl('index')),
+                ->url(UserResource::getUrl('index')),
             Stat::make('مدفوعات هذا الشهر', Number::format($paymentsCountThisMonth))
                 ->description('عملية دفع مكتملة')
                 ->descriptionIcon('heroicon-o-banknotes', IconPosition::Before)
                 ->icon('heroicon-o-check-circle')
                 ->color('info')
-                ->url(\App\Filament\Resources\Payments\PaymentResource::getUrl('index')),
+                ->url(PaymentResource::getUrl('index')),
         ];
     }
 }

@@ -18,14 +18,14 @@ class DatabaseSeeder extends Seeder
             [
                 'email' => 'superadmin@mediax.com',
                 'name' => 'مدير النظام',
-                'password' => Hash::make(config('app.admin_password', 'ChangeMe!2026')),
+                'password' => config('app.admin_password'),
                 'role' => UserRole::SuperAdmin,
                 'email_verified_at' => now(),
             ],
             [
                 'email' => 'admin@mediax.com',
                 'name' => 'مدير المنصة',
-                'password' => Hash::make(config('app.admin_password', 'ChangeMe!2026')),
+                'password' => config('app.admin_password'),
                 'role' => UserRole::Admin,
                 'email_verified_at' => now(),
             ],

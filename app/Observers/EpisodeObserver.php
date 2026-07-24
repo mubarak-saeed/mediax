@@ -21,17 +21,15 @@ class EpisodeObserver
 
     public function deleting(Episode $episode): void
     {
-        if (! str_starts_with($episode->poster_url, 'images')) {
-
             $this->cleanup->deleteEpisodeFiles($episode);
-        }
+    
     }
 
     public function updating(Episode $episode): void
     {
         $posterOld = $episode->getOriginal('poster_url');
         $posterNew = $episode->poster_url;
-        if (filled($posterOld) && $posterOld !== $posterNew && ! str_starts_with($posterOld, 'http') && ! str_starts_with($posterOld, 'images')) {
+        if (filled($posterOld) && $posterOld !== $posterNew) {
             $this->cleanup->deletePosterIfLocal($posterOld);
         }
 
@@ -47,6 +45,7 @@ class EpisodeObserver
     private function syncDurationFromFile(Episode $episode): void
     {
         if (blank($episode->file_url)) {
+            $episode->duration = null;
             return;
         }
 

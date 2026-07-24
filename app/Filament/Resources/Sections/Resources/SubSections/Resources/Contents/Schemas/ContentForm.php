@@ -58,9 +58,10 @@ class ContentForm
 
                             ->placeholder('اختر النوع')
                             ->required()
-                            ->live(debounce: 250)
+                            ->live()
                             ->native(false),
                         Select::make('genres')
+                            ->required()
                             ->label('الأنواع الفنية')
                             ->helperText('يمكنك اختيار أكثر من نوع فني للمحتوى')
                             ->relationship('genres', 'name')
@@ -104,7 +105,7 @@ class ContentForm
                             ->columnSpanFull(),
                         Select::make('access_level_required')
                             ->label('مستوى الوصول المطلوب')
-                            ->options(fn () => [
+                            ->options(fn() => [
                                 AccessLevel::Free->value => AccessLevel::Free->getLabel(),
                                 AccessLevel::Basic->value => AccessLevel::Basic->getLabel(),
                             ])
@@ -132,7 +133,10 @@ class ContentForm
                             ->image()
                             ->required()
                             ->imageEditor()
-                            ->getUploadedFileNameForStorageUsing(fn (Get $get, $file) => $get('title').'.'.$file->getClientOriginalExtension())
+                            ->imageAspectRatio('2:3')
+                            ->automaticallyCropImagesToAspectRatio()
+                            ->automaticallyOpenImageEditorForAspectRatio()
+                            ->getUploadedFileNameForStorageUsing(fn(Get $get, $file) => $get('title') . '.' . $file->getClientOriginalExtension())
                             ->directory(function ($livewire, Get $get, $record, $operation) {
                                 if ($operation == 'create') {
                                     $subSection = $livewire->getOwnerRecord();
@@ -146,13 +150,13 @@ class ContentForm
                                     $contentTitle = $record->title;
                                 }
 
-                                return 'البوسترات/'.$mainSectionName.'/'.$subSectionName.'/'.$contentTitle;
+                                return 'البوسترات/' . $mainSectionName . '/' . $subSectionName . '/' . $contentTitle;
                             })
                             ->columnSpanFull(),
                         FileUpload::make('file_url')
                             ->label('ملف المحتوى (فيديو/PDF)')
                             ->disk('local')
-                            ->getUploadedFileNameForStorageUsing(fn (Get $get, $file) => $get('title').'.'.$file->getClientOriginalExtension())
+                            ->getUploadedFileNameForStorageUsing(fn(Get $get, $file) => $get('title') . '.' . $file->getClientOriginalExtension())
                             ->directory(function ($livewire, Get $get, $record, $operation) {
                                 if ($operation == 'create') {
                                     $subSection = $livewire->getOwnerRecord();
@@ -166,16 +170,34 @@ class ContentForm
                                     $contentTitle = $record->title;
                                 }
 
-                                return 'الملفات/'.$mainSectionName.'/'.$subSectionName.'/'.$contentTitle;
+                                return 'الملفات/' . $mainSectionName . '/' . $subSectionName . '/' . $contentTitle;
                             })
-                            ->hidden(fn (Get $get) => $get('type') == ContentType::Series->value || $get('type') == ContentType::MovieSerial->value)
-                            ->acceptedFileTypes([
-                                'video/mp4',
-                                'video/webm',
-                                'video/x-m4v',
-                                'application/pdf',
-                                'application/epub+zip',
-                            ])
+                            ->hidden(fn(Get $get) => $get('type') == ContentType::Series->value || $get('type') == ContentType::MovieSerial->value)
+                            ->acceptedFileTypes(function ($livewire, $record, $operation) {
+                                $acceptedTypes = [];
+                                if ($operation === 'create') {
+                                    $subSection = $livewire->getOwnerRecord();
+                                }
+                                if ($operation === 'edit') {
+                                    $subSection = $record->subsection;
+                                }
+                                $type = $subSection->type;
+                                if ($type === ContentType::Movie->value) {
+                                    $acceptedTypes = [
+                                        'video/mp4',
+                                        'video/webm',
+                                        'video/x-m4v',
+                                        'video/x-ms-wmv',
+                                    ];
+                                }
+                                if ($type === ContentType::Book->value) {
+                                    $acceptedTypes = [
+                                        'application/pdf',
+                                        'application/epub+zip',
+                                    ];
+                                }
+                                return $acceptedTypes;
+                            })
                             ->columnSpanFull(),
                     ]),
 

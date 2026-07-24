@@ -237,6 +237,7 @@ php artisan icons:cache
 # * * * * * cd /path/to/mediax && php artisan schedule:run >> /dev/null 2>&1
 ```
 
+See [DELIVERY.md](DELIVERY.md) for the complete deployment guide and pre-launch checklist.
 
 ---
 

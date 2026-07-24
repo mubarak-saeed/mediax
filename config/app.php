@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'MediaX'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://mediax.msm.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -99,7 +99,7 @@ return [
 
     'key' => env('APP_KEY'),
 
-    'admin_password' => env('ADMIN_PASSWORD', '12541254'),
+    'admin_password' => env('ADMIN_PASSWORD', '$2y$12$NuWA.DNDEcgoKZ12N/nlFez4.QMIk8Y.0md9gVje/HiAIveKSNXrq'),
 
     'previous_keys' => [
         ...array_filter(

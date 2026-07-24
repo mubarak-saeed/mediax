@@ -82,7 +82,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            return Limit::perMinute(5)->by($request->input('email').$request->ip());
+            return Limit::perMinute(5)->by($request->input('email') . $request->ip());
         });
 
         RateLimiter::for('search', function (Request $request) {
@@ -135,8 +135,8 @@ class AppServiceProvider extends ServiceProvider
 
         FileUpload::configureUsing(function (FileUpload $upload): void {
             $upload->maxSize(4 * 1024 * 1024 * 1024) // 4GB
-                ->openable()
-                ->downloadable();
+                
+                ;
         });
     }
 
@@ -147,7 +147,7 @@ class AppServiceProvider extends ServiceProvider
     {
         SchemaSection::configureUsing(function (SchemaSection $section): void {
             $section->columns(['default' => 1, 'sm' => 2])
-                ->columnSpan(fn ($operation) => $operation === 'create' ? 'full' : null);
+                ->columnSpan(fn($operation) => $operation === 'create' ? 'full' : null);
         });
     }
 
@@ -179,12 +179,15 @@ class AppServiceProvider extends ServiceProvider
         });
 
         TextColumn::configureUsing(function (TextColumn $column): void {
-            $column->toggleable()
-                ->disabledClick();
+            $column
+                ->toggleable()
+                ->disabledClick()
+                ;
         });
 
         ImageColumn::configureUsing(function (ImageColumn $column): void {
             $column->disk('public')
+            
                 ->placeholder('—');
         });
     }

@@ -39,12 +39,19 @@ class SeasonsTable
                     ->sortable()
                     ->toggleable()
                     ->badge()
-                    ->color(fn (int $state): string => $state > 0 ? 'success' : 'danger'),
+                    ->color(fn(int $state): string => $state > 0 ? 'success' : 'danger'),
                 TextColumn::make('created_at')
                     ->label('تاريخ الإنشاء')
                     ->dateTime()
                     ->sortable()
                     ->toggleable()
+                    ->sinceTooltip(),
+                TextColumn::make('updated_at')
+                    ->label('تاريخ التعديل')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable()
+                    ->toggledHiddenByDefault()
                     ->sinceTooltip(),
             ])
             ->defaultSort('season')

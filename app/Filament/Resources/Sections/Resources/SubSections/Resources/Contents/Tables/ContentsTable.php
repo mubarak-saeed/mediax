@@ -25,8 +25,8 @@ class ContentsTable
     {
         return $table
             // ->modifyQueryUsing(function ($query) {
-            //     if (!auth('web')->user()->isSuperAdmin())
-            //         $query->where('created_by', auth('web')->id());
+            //     // if (!auth('web')->user()->isSuperAdmin())
+            //         $query->latest();
             // })
             ->recordTitleAttribute('title')
             ->headerActions([
@@ -153,6 +153,7 @@ class ContentsTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 }

@@ -22,7 +22,7 @@ class MediaFileCleanupService
      */
     public function deletePosterIfLocal(?string $path): bool
     {
-        if (blank($path) || str_starts_with($path, 'http')) {
+        if (blank($path) || str_starts_with($path, 'http')|| str_starts_with($path, 'images') || str_starts_with($path, 'default')) {
             return false;
         }
 
@@ -38,7 +38,7 @@ class MediaFileCleanupService
      */
     public function deleteLocalFile(?string $path): bool
     {
-        if (blank($path)) {
+        if (blank($path)|| str_starts_with($path, 'http') || str_starts_with($path, 'default')) {
             return false;
         }
 
@@ -70,8 +70,8 @@ class MediaFileCleanupService
      */
     public function deleteContentFolder(Content $content): void
     {
-        $posterContentFolder = $this->posterFolder.'/'.$content->subsection->section->name.'/'.$content->subsection->name.'/'.$content->title;
-        $filesContentFolder = $this->filesFolder.'/'.$content->subsection->section->name.'/'.$content->subsection->name.'/'.$content->title;
+        $posterContentFolder = $this->posterFolder . '/' . $content->subsection->section->name . '/' . $content->subsection->name . '/' . $content->title;
+        $filesContentFolder = $this->filesFolder . '/' . $content->subsection->section->name . '/' . $content->subsection->name . '/' . $content->title;
         $this->deleteFolder('public', $posterContentFolder);
         $this->deleteFolder('local', $filesContentFolder);
     }
@@ -81,9 +81,9 @@ class MediaFileCleanupService
      */
     public function deleteSeasonFolder(Season $season): void
     {
-        $posterSeasonFolder = $this->posterFolder.'/'.$season->content->subsection->section->name.'/'.$season->content->subsection->name.'/'.$season->content->title.'/'.$season->title;
+        $posterSeasonFolder = $this->posterFolder . '/' . $season->content->subsection->section->name . '/' . $season->content->subsection->name . '/' . $season->content->title . '/' . $season->title;
         $this->deleteFolder('public', $posterSeasonFolder);
-        $filesSeasonFolder = $this->filesFolder.'/'.$season->content->subsection->section->name.'/'.$season->content->subsection->name.'/'.$season->content->title.'/'.$season->title;
+        $filesSeasonFolder = $this->filesFolder . '/' . $season->content->subsection->section->name . '/' . $season->content->subsection->name . '/' . $season->content->title . '/' . $season->title;
         $this->deleteFolder('local', $filesSeasonFolder);
     }
 

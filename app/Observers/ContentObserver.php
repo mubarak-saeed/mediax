@@ -49,7 +49,7 @@ class ContentObserver
     {
         $posterOld = $content->getOriginal('poster_url');
         $posterNew = $content->poster_url;
-        if (filled($posterOld) && $posterOld !== $posterNew && ! str_starts_with($posterOld, 'http') && ! str_starts_with($posterOld, 'images')) {
+        if (filled($posterOld) && $posterOld !== $posterNew) {
             $this->cleanup->deletePosterIfLocal($posterOld);
         }
 
@@ -90,7 +90,7 @@ class ContentObserver
         }
 
         // للأفلام: نقرأ مدة الفيديو بالثواني إن أمكن
-        if (in_array($content->type, [ContentType::Movie, ContentType::MovieSerial], true)) {
+        if ($content->type === ContentType::Movie) {
             $seconds = $this->mediaMetadata->getVideoDurationMinutes($absolutePath);
 
             if ($seconds !== null && $seconds > 0) {

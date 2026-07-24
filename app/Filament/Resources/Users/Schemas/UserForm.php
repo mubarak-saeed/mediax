@@ -16,6 +16,7 @@ class UserForm
         return $schema
             ->components([
                 SchemaSection::make('معلومات المستخدم')
+                ->collapsible()
                     ->schema([
                         TextInput::make('name')
                             ->label('الاسم')

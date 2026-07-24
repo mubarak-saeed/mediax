@@ -20,6 +20,7 @@ class SectionForm
         return $schema
             ->components([
                 SchemaSection::make('معلومات القسم')
+                ->collapsible()
                     ->schema([
                         TextInput::make('name')
                             ->label('اسم القسم')
@@ -46,8 +47,8 @@ class SectionForm
                             ->image()
                             ->hidden()
                             ->imageEditor()
-                            ->getUploadedFileNameForStorageUsing(fn (Get $get, $file) => $get('name').'.'.$file->getClientOriginalExtension())
-                            ->directory(fn (Get $get) => 'البوسترات/'.$get('name')),
+                            ->getUploadedFileNameForStorageUsing(fn(Get $get, $file) => $get('name') . '.' . $file->getClientOriginalExtension())
+                            ->directory(fn(Get $get) => 'البوسترات/' . $get('name')),
                         TextInput::make('order')
                             ->label('ترتيب العرض')
                             ->unique(table: Section::class, column: 'order', ignoreRecord: true)

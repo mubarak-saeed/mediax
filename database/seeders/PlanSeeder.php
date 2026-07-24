@@ -20,7 +20,7 @@ class PlanSeeder extends Seeder
                 'name' => 'Basic',
                 'access_level' => AccessLevel::Basic,
                 'sort_order' => 1,
-                'stripe_price_id' => env('STRIPE_PRICE_BASIC'),
+                'stripe_price_id' => env('STRIPE_PRICE_BASIC', 'price_1Syzd2I5TfGeaMT0OGykJfDY'),
                 'features' => [
                     'مشاهدة الأفلام والمسلسلات',
                     'جودة قياسية',
@@ -31,7 +31,7 @@ class PlanSeeder extends Seeder
                 'name' => 'Pro',
                 'access_level' => AccessLevel::Pro,
                 'sort_order' => 2,
-                'stripe_price_id' => env('STRIPE_PRICE_PRO'),
+                'stripe_price_id' => env('STRIPE_PRICE_PRO', 'price_1SyzoKI5TfGeaMT0XLE7ZhWX'),
                 'features' => [
                     'كل ميزات Basic',
                     'جودة HD',
@@ -43,7 +43,7 @@ class PlanSeeder extends Seeder
                 'name' => 'Premium',
                 'access_level' => AccessLevel::Premium,
                 'sort_order' => 3,
-                'stripe_price_id' => env('STRIPE_PRICE_PREMIUM'),
+                'stripe_price_id' => env('STRIPE_PRICE_PREMIUM', 'price_1SyztGI5TfGeaMT0nKxcrXZS'),
                 'features' => [
                     'كل ميزات Pro',
                     'جودة 4K UHD',

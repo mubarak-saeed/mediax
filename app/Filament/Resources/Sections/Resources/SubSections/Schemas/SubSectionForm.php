@@ -19,6 +19,7 @@ class SubSectionForm
         return $schema
             ->components([
                 SchemaSection::make('معلومات القسم الفرعي')
+                ->collapsible()
                     ->schema([
                         TextInput::make('name')
                             ->label('الاسم')
@@ -66,7 +67,7 @@ class SubSectionForm
 
                                 return $options;
                             })
-                            ->default(fn ($livewire) => $livewire->getOwnerRecord()->type)
+                            ->default(fn($livewire) => $livewire->getOwnerRecord()->type)
                             // ->disabledOn('edit')
                             ->placeholder('اختر النوع')
                             ->native(false),
@@ -81,7 +82,7 @@ class SubSectionForm
                             ->image()
                             ->hidden()
                             ->imageEditor()
-                            ->getUploadedFileNameForStorageUsing(fn (Get $get, $file) => $get('name').'.'.$file->getClientOriginalExtension())
+                            ->getUploadedFileNameForStorageUsing(fn(Get $get, $file) => $get('name') . '.' . $file->getClientOriginalExtension())
                             ->directory(function ($livewire, Get $get, $record, $operation) {
                                 if ($operation == 'create') {
                                     $section = $livewire->getOwnerRecord();
@@ -93,7 +94,7 @@ class SubSectionForm
                                     $subSectionName = $record->name;
                                 }
 
-                                return 'البوسترات/'.$mainSectionName.'/'.$subSectionName;
+                                return 'البوسترات/' . $mainSectionName . '/' . $subSectionName;
                             }),
                     ])
                     ->columns(2),

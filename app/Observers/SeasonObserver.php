@@ -18,10 +18,9 @@ class SeasonObserver
 
     public function updating(Season $season): void
     {
-
         $posterOld = $season->getOriginal('poster_url');
         $posterNew = $season->poster_url;
-        if (filled($posterOld) && $posterOld !== $posterNew && ! str_starts_with($posterOld, 'http')) {
+        if (filled($posterOld) && $posterOld !== $posterNew) {
             $this->cleanup->deletePosterIfLocal($posterOld);
         }
     }

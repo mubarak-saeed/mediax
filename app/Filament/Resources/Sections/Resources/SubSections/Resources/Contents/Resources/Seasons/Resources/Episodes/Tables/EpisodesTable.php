@@ -32,6 +32,7 @@ class EpisodesTable
                 ImageColumn::make('poster_url')
                     ->label('البوستر')
                     ->circular(false)
+                    ->toggleable()
                     ->toggledHiddenByDefault(),
                 TextColumn::make('episode_number')
                     ->label('رقم الحلقة')
@@ -40,6 +41,7 @@ class EpisodesTable
                 TextColumn::make('title')
                     ->label('العنوان')
                     ->searchable()
+                    ->sortable()
                     ->placeholder('—'),
                 TextColumn::make('views_count')
                     ->label('المشاهدات')
@@ -54,20 +56,34 @@ class EpisodesTable
                         if (
                             $hours > 0 && $minutes > 0 && $seconds > 0
                         ) {
-                            $duration = $hours.' س '.$minutes.' د '.$seconds.' ث';
+                            $duration = $hours . ' س ' . $minutes . ' د ' . $seconds . ' ث';
                         } elseif ($hours > 0 && $minutes > 0) {
-                            $duration = $hours.' س '.$minutes.' د';
+                            $duration = $hours . ' س ' . $minutes . ' د';
                         } elseif ($hours > 0 && $seconds > 0) {
-                            $duration = $hours.' س '.$seconds.' ث';
+                            $duration = $hours . ' س ' . $seconds . ' ث';
                         } elseif ($minutes > 0 && $seconds > 0) {
-                            $duration = $minutes.' د '.$seconds.' ث';
+                            $duration = $minutes . ' د ' . $seconds . ' ث';
                         } else {
-                            $duration = $seconds.' ث';
+                            $duration = $seconds . ' ث';
                         }
 
                         return $duration;
                     })
                     ->sortable(),
+
+                TextColumn::make('created_at')
+                    ->label('تاريخ الإنشاء')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable()
+                    ->sinceTooltip(),
+                TextColumn::make('updated_at')
+                    ->label('تاريخ التعديل')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggledHiddenByDefault()
+                    ->toggleable()
+                    ->sinceTooltip(),
             ])
             ->defaultSort('episode_number')
             ->recordActions([

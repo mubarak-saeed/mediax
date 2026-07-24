@@ -26,6 +26,7 @@ class Dashboard extends PagesDashboard
     protected function getHeaderActions(): array
     {
         Artisan::call('stripe:sync');
+        
 
         return [
             Action::make('viewWebSite')

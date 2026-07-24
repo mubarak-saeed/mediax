@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Payments\Tables;
 
 use App\Enums\PaymentStatus;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
@@ -14,13 +15,6 @@ class PaymentsTable
     {
         return $table
             ->columns([
-                TextColumn::make('transaction_id')
-                    ->label('رقم المعاملة')
-                    ->searchable()
-                    ->sortable()
-                    ->copyable()
-                    ->copyMessage('تم نسخ رقم المعاملة')
-                    ->copyMessageDuration(1500),
                 TextColumn::make('user.name')
                     ->label('المستخدم')
                     ->searchable()
@@ -46,6 +40,15 @@ class PaymentsTable
                     ->dateTime()
                     ->sortable()
                     ->sinceTooltip(),
+            TextColumn::make('transaction_id')
+                ->label('رقم المعاملة')
+                ->searchable()
+                ->sortable()
+                ->disabledClick(false)
+                ->copyable()
+                ->toggledHiddenByDefault()
+                ->copyMessage('تم نسخ رقم المعاملة')
+                ->copyMessageDuration(1500),
                 TextColumn::make('currency')
                     ->label('العملة')
                     ->badge()
@@ -61,6 +64,8 @@ class PaymentsTable
                     ->sortable()
                     ->toggledHiddenByDefault()
                     ->sinceTooltip(),
+            ])
+            ->recordActions([
             ])
             ->defaultSort('paid_at', 'desc')
             ->filters([

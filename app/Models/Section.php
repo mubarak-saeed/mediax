@@ -67,4 +67,6 @@ class Section extends Model
     {
         return $this->hasManyThrough(Content::class, SubSection::class, 'section_id', 'sub_section_id');
     }
+
+    
 }

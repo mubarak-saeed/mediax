@@ -19,7 +19,6 @@ new class extends Component
         }
 
         return Content::query()
-        ->where('file_url', '!=', null)
             ->where(fn ($q) => $q->where('title', 'like', '%'.$this->query.'%')
                 ->orWhere('description', 'like', '%'.$this->query.'%'))
             ->with('genres')
@@ -29,10 +28,10 @@ new class extends Component
 };
 ?>
 
-<div class="relative w-full max-w-full md:max-w-xs" x-data="{ open: false }" @click.away="open = false">
+<div class="relative w-full max-w-full sm:max-w-xs" x-data="{ open: false }" @click.away="open = false">
     <input type="search" wire:model.live.debounce.300ms="query" @focus="open = true"
         placeholder="ابحث عن فيلم، مسلسل، كتاب..."
-        class="w-full rounded-xl bg-slate-800 border border-slate-700 text-white px-4 py-2.5 text-base sm:text-sm focus:ring-2 focus:ring-rose-500 focus:border-transparent min-h-[44px]"
+        class="w-full rounded-xl bg-slate-800 border border-slate-700 text-white px-4 py-2.5 text-base sm:text-sm focus:ring-2 focus:ring-rose-500 focus:border-transparent min-h-10"
         aria-label="البحث">
     @if(strlen($query) >= 2)
     <div x-show="open" x-transition

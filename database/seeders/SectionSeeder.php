@@ -33,6 +33,5 @@ class SectionSeeder extends Seeder
                 $sectionData
             );
         }
-
     }
 }

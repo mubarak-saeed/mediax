@@ -18,6 +18,7 @@ class SeasonForm
         return $schema
             ->components([
                 SchemaSection::make('معلومات الموسم')
+                ->collapsible()
                     ->schema([
                         TextInput::make('season')
                             ->label('الموسم')
@@ -33,11 +34,11 @@ class SeasonForm
                                 return $rule->where('content_id', $content->id);
                             })
                             ->numeric()
-                            ->live(debounce: 250)
+                            ->live(onBlur: true)
                             ->default(1)
                             ->minValue(1)
                             ->afterStateUpdated(function (Set $set, Get $get) {
-                                $set('title', 'الموسم '.$get('season'));
+                                $set('title', 'الموسم ' . $get('season'));
                             })
                             ->helperText('رقم الموسم مثال: 1، 2، 3...'),
                         TextInput::make('title')
@@ -47,7 +48,7 @@ class SeasonForm
                             ->dehydrated()
                             ->disabled()
                             ->default(function (Get $get) {
-                                return 'الموسم '.$get('season');
+                                return 'الموسم ' . $get('season');
                             }),
                         Textarea::make('description')
                             ->label('الوصف')
@@ -58,7 +59,10 @@ class SeasonForm
                             ->label('صورة الغلاف (البوستر)')
                             ->image()
                             ->imageEditor()
-                            ->getUploadedFileNameForStorageUsing(fn (Get $get, $file) => $get('title').'.'.$file->getClientOriginalExtension())
+                            ->imageAspectRatio('2:3')
+                            ->automaticallyCropImagesToAspectRatio()
+                            ->automaticallyOpenImageEditorForAspectRatio()
+                            ->getUploadedFileNameForStorageUsing(fn(Get $get, $file) => $get('title') . '.' . $file->getClientOriginalExtension())
                             ->directory(function ($livewire, Get $get, $record, $operation) {
                                 if ($operation == 'create') {
                                     $content = $livewire->getOwnerRecord();
@@ -74,7 +78,7 @@ class SeasonForm
                                     $seasonTitle = $record->title;
                                 }
 
-                                return 'البوسترات/'.$mainSectionName.'/'.$subSectionName.'/'.$contentTitle.'/'.$seasonTitle;
+                                return 'البوسترات/' . $mainSectionName . '/' . $subSectionName . '/' . $contentTitle . '/' . $seasonTitle;
                             })
                             ->columnSpanFull(),
                     ])

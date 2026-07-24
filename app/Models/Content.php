@@ -99,13 +99,20 @@ class Content extends Model
             'description' => $this->description,
         ];
     }
+    public static function query()
+    {
+        return parent::query();
+    }
 
     /**
      * نطاق: المحتوى المميز فقط.
      */
     public function scopeFeatured(Builder $query): Builder
     {
-        return $query->where('is_featured', true);
+        $query->where('is_featured', true);
+
+
+        return $query;
     }
 
     /**
@@ -114,8 +121,11 @@ class Content extends Model
     public function scopeOrderByLatestEpisode(Builder $query): Builder
     {
         return $query
-            ->withMax('episodes as latest_episode_updated_at', 'updated_at')
-            ->orderByDesc('latest_episode_updated_at');
+
+            ->withMax('episodes as latest_episode_created_at', 'created_at')
+            ->orderByDesc('latest_episode_created_at')
+            ->orderByDesc('created_at')
+        ;
     }
 
     /**
@@ -145,6 +155,8 @@ class Content extends Model
     {
         return $this->subsection?->section;
     }
+
+
 
     /**
      * الأنواع الفنية المرتبطة بالمحتوى.
@@ -202,7 +214,7 @@ class Content extends Model
     }
 
     /**
-     * آخر حلقة تمت إضافتها (حسب updated_at) — للعرض في الصفحة الرئيسية.
+     * آخر حلقة تمت إضافتها (حسب created_at) — للعرض في الصفحة الرئيسية.
      */
     public function getNewestEpisodeAttribute(): ?Episode
     {
@@ -213,7 +225,7 @@ class Content extends Model
         return Episode::query()
             ->whereNotNull('file_url')
             ->whereHas('season', fn($q) => $q->where('content_id', $this->id))
-            ->orderByDesc('updated_at')
+            ->orderByDesc('created_at')
             ->with('season')
             ->first();
     }

@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Plans\Schemas;
 
 use App\Enums\AccessLevel;
+use App\Enums\Currency;
+use App\Enums\PlanInterval;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -17,9 +19,12 @@ class PlanForm
         return $schema
             ->components([
                 SchemaSection::make('معلومات الخطة')
+                    ->collapsible()
+                    ->description('تأكد من ملء جميع الحقول بدقة لضمان مزامنة صحيحة مع Stripe.')
                     ->schema([
                         TextInput::make('name')
                             ->label('الاسم')
+                            ->helperText('يتم مزامنة هذا الاسم مع Stripe.')
                             ->required()
                             ->maxLength(255)
                             ->placeholder('مثال: الخطة الأساسية'),
@@ -27,9 +32,11 @@ class PlanForm
                             ->label('السعر')
                             ->required()
                             ->numeric()
+                            ->readOnly()
+                            ->helperText('يتم مزامنة هذا السعر مع Stripe.')
                             ->default(0.0)
                             ->minValue(0)
-                            ->prefix('$'),
+                            ->suffix('$'),
                         Textarea::make('description')
                             ->label('الوصف')
                             ->rows(4)
@@ -53,17 +60,21 @@ class PlanForm
                     ->description('معرفات Stripe للمزامنة مع بوابة الدفع')
                     ->schema([
                         TextInput::make('stripe_product_id')
+                            ->password()
+                            ->revealable()
                             ->label('Stripe Product ID'),
                         TextInput::make('stripe_price_id')
+                            ->password()
+                            ->revealable()
                             ->label('Stripe Price ID'),
                         Select::make('currency')
                             ->label('العملة')
-                            ->options(\App\Enums\Currency::class)
-                            ->default(\App\Enums\Currency::Usd)
+                            ->options(Currency::class)
+                            ->default(Currency::Usd)
                             ->native(false),
                         Select::make('interval')
                             ->label('الفترة')
-                            ->options(\App\Enums\PlanInterval::class)
+                            ->options(PlanInterval::class)
                             ->placeholder('اختر الفترة')
                             ->native(false),
                         TextInput::make('interval_count')
@@ -74,8 +85,10 @@ class PlanForm
                             ->minValue(1),
                     ])
                     ->columns(2)
-                    ->collapsed(),
+                    ->collapsible(),
                 SchemaSection::make('ميزات الخطة')
+                    ->collapsible()
+                    ->collapsed()
                     ->schema([
                         Repeater::make('features')
                             ->relationship()

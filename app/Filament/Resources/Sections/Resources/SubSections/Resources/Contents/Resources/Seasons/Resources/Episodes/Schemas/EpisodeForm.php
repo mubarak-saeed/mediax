@@ -34,10 +34,10 @@ class EpisodeForm
                                 return $rule->where('season_id', $season->id);
                             })
                             ->default(1)
-                            ->live(debounce: 250)
+                            ->live(onBlur: true)
                             ->minValue(1)
                             ->afterStateUpdated(function (Set $set, Get $get) {
-                                $set('title', 'الحلقة '.$get('episode_number'));
+                                $set('title', 'الحلقة ' . $get('episode_number'));
                             })
                             ->helperText('مثال: 01، 02، 03...'),
                         TextInput::make('title')
@@ -45,7 +45,7 @@ class EpisodeForm
                             ->dehydrated()
                             ->disabled()
                             ->default(function (Get $get) {
-                                return 'الحلقة '.$get('episode_number');
+                                return 'الحلقة ' . $get('episode_number');
                             })
                             ->placeholder('عنوان الحلقة'),
                         Textarea::make('description')
@@ -62,7 +62,7 @@ class EpisodeForm
                             ->label('صورة الغلاف (البوستر)')
                             ->image()
                             ->imageEditor()
-                            ->getUploadedFileNameForStorageUsing(fn (Get $get, $file) => $get('title').'.'.$file->getClientOriginalExtension())
+                            ->getUploadedFileNameForStorageUsing(fn(Get $get, $file) => $get('title') . '.' . $file->getClientOriginalExtension())
                             ->directory(function ($livewire, $record, $operation) {
                                 if ($operation == 'create') {
                                     $season = $livewire->getOwnerRecord();
@@ -80,14 +80,14 @@ class EpisodeForm
                                     $seasonTitle = $season->title;
                                 }
 
-                                return 'البوسترات/'.$mainSectionName.'/'.$subSectionName.'/'.$contentTitle.'/'.$seasonTitle;
+                                return 'البوسترات/' . $mainSectionName . '/' . $subSectionName . '/' . $contentTitle . '/' . $seasonTitle;
                             })
                             ->maxSize(5120)
                             ->columnSpanFull(),
                         FileUpload::make('file_url')
                             ->label('ملف الحلقة (فيديو)')
                             ->disk('local')
-                            ->getUploadedFileNameForStorageUsing(fn (Get $get, $file) => $get('title').'.'.$file->getClientOriginalExtension())
+                            ->getUploadedFileNameForStorageUsing(fn(Get $get, $file) => $get('title') . '.' . $file->getClientOriginalExtension())
                             ->directory(function ($livewire, $record, $operation) {
                                 if ($operation == 'create') {
                                     $season = $livewire->getOwnerRecord();
@@ -105,9 +105,9 @@ class EpisodeForm
                                     $seasonTitle = $season->title;
                                 }
 
-                                return 'الملفات/'.$mainSectionName.'/'.$subSectionName.'/'.$contentTitle.'/'.$seasonTitle;
+                                return 'الملفات/' . $mainSectionName . '/' . $subSectionName . '/' . $contentTitle . '/' . $seasonTitle;
                             })
-                            ->acceptedFileTypes(['video/mp4', 'video/webm', 'video/x-m4v'])
+                            ->acceptedFileTypes(['video/mp4', 'video/webm', 'video/x-m4v', 'video/x-ms-wmv'])
                             ->columnSpanFull(),
                     ]),
             ]);

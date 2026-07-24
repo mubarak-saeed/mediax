@@ -24,7 +24,7 @@ class PaymentResource extends Resource
 
     protected static ?string $modelLabel = 'دفعة';
 
-    protected static ?string $pluralModelLabel = 'المدفوعات';
+    protected static ?string $pluralModelLabel = 'مدفوعات';
 
     protected static ?int $navigationSort = 2;
 
@@ -41,22 +41,23 @@ class PaymentResource extends Resource
     public static function getPages(): array
     {
         return [
+            
             'index' => ListPayments::route('/'),
         ];
     }
 
-    public static function canCreate(): bool
-    {
-        return false;
-    }
+    // public static function canCreate(): bool
+    // {
+    //     return false;
+    // }
 
-    public static function canEdit($record): bool
-    {
-        return false;
-    }
+    // public static function canEdit($record): bool
+    // {
+    //     return false;
+    // }
 
-    public static function canDelete($record): bool
-    {
-        return false;
-    }
+    // public static function canDelete($record): bool
+    // {
+    //     return false;
+    // }
 }
